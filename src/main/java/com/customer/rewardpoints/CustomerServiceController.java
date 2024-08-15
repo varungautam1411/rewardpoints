@@ -41,7 +41,7 @@ public class CustomerServiceController {
 
 
 		CustomerData customerData = customerDataRepository.findByCustomerId(customerID);
-		System.out.println(customerData);
+
         if(customerData == null)
         {
         	throw new RuntimeException("Invalid / Missing customer Id ");
@@ -49,7 +49,7 @@ public class CustomerServiceController {
 
 		List<CustomerTransactions> list = customerTransactionsRepository.findAllByCustomerId(customerID);
 
-		System.out.println(list);
+
 		CustomerRewards customerRewards = new CustomerRewards();
 		CustomerRewardsServiceImpl customerRewardsService = new CustomerRewardsServiceImpl();
 		customerRewards = customerRewardsService.prepareRewardsList(list);

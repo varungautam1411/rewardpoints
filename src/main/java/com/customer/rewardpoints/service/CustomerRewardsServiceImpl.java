@@ -28,15 +28,14 @@ public class CustomerRewardsServiceImpl {
 		for(CustomerTransactions customerTransactions : list){
 
 			Date dateTemp = customerTransactions.getTransDate();
-			System.out.println("dateTemp" +dateTemp);
+			
 			int month = dateTemp.getMonth()+1;
-			System.out.println("month" +month);
+
 
 			GregorianCalendar date = new GregorianCalendar();
 			int currentMonth = date.get(Calendar.MONTH)+1;
 			int rewards = calculateReward(customerTransactions.getAmount());
-			System.out.println("month" +month);
-			System.out.println("currentMonth" +currentMonth);
+
 			if(currentMonth - month == 1){
 				customerRewards.setLastMonthCustomerRewardPoints(customerRewards.getLastMonthCustomerRewardPoints()+rewards);
 				customerRewards.setTotalCustomerRewardPoints(customerRewards.getTotalCustomerRewardPoints()+rewards);
@@ -53,16 +52,7 @@ public class CustomerRewardsServiceImpl {
 		}
 
 
-//		Long lastMonthRewardPoints = getRewardsPerMonth(lastMonthTransactions);
-//		Long lastSecondMonthRewardPoints = getRewardsPerMonth(lastSecondMonthTransactions);
-//		Long lastThirdMonthRewardPoints = getRewardsPerMonth(lastThirdMonthTransactions);
-//
-//		Rewards customerRewards = new Rewards();
-//		customerRewards.setCustomerId(customerId);
-//		customerRewards.setLastMonthRewardPoints(lastMonthRewardPoints);
-//		customerRewards.setLastSecondMonthRewardPoints(lastSecondMonthRewardPoints);
-//		customerRewards.setLastThirdMonthRewardPoints(lastThirdMonthRewardPoints);
-//		customerRewards.setTotalRewards(lastMonthRewardPoints + lastSecondMonthRewardPoints + lastThirdMonthRewardPoints);
+
 
 		return customerRewards;
 
