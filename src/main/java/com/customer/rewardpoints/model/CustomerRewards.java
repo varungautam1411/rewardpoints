@@ -1,5 +1,8 @@
 package com.customer.rewardpoints.model;
 
+import org.springframework.context.annotation.Bean;
+
+
 public class CustomerRewards {
 
 	
@@ -8,40 +11,40 @@ public class CustomerRewards {
 
 
 	public String customerName;
-		public int lastMonthCustomerRewardPoints;
-	    public int secondLastMothCustomerRewardPoints;
-	    public int thirdLastMothCustomerRewardPoints;
-	    public int totalCustomerRewardPoints;
+		public float lastMonthCustomerRewardPoints;
+	    public float secondLastMothCustomerRewardPoints;
+	    public float thirdLastMothCustomerRewardPoints;
+	    public float totalCustomerRewardPoints;
 	    
 	    
 	    public int getCustomerId() {
 			return customerId;
 		}
-		public int getLastMonthCustomerRewardPoints() {
+		public float getLastMonthCustomerRewardPoints() {
 			return lastMonthCustomerRewardPoints;
 		}
-		public int getSecondLastMothCustomerRewardPoints() {
+		public float getSecondLastMothCustomerRewardPoints() {
 			return secondLastMothCustomerRewardPoints;
 		}
-		public int getThirdLastMothCustomerRewardPoints() {
+		public float getThirdLastMothCustomerRewardPoints() {
 			return thirdLastMothCustomerRewardPoints;
 		}
-		public int getTotalCustomerRewardPoints() {
+		public float getTotalCustomerRewardPoints() {
 			return totalCustomerRewardPoints;
 		}
 		public void setCustomerId(int customerId) {
 			this.customerId = customerId;
 		}
-		public void setLastMonthCustomerRewardPoints(int lastMonthCustomerRewardPoints) {
+		public void setLastMonthCustomerRewardPoints(float lastMonthCustomerRewardPoints) {
 			this.lastMonthCustomerRewardPoints = lastMonthCustomerRewardPoints;
 		}
-		public void setSecondLastMothCustomerRewardPoints(int secondLastMothCustomerRewardPoints) {
+		public void setSecondLastMothCustomerRewardPoints(float secondLastMothCustomerRewardPoints) {
 			this.secondLastMothCustomerRewardPoints = secondLastMothCustomerRewardPoints;
 		}
-		public void setThirdLastMothCustomerRewardPoints(int thirdLastMothCustomerRewardPoints) {
+		public void setThirdLastMothCustomerRewardPoints(float thirdLastMothCustomerRewardPoints) {
 			this.thirdLastMothCustomerRewardPoints = thirdLastMothCustomerRewardPoints;
 		}
-		public void setTotalCustomerRewardPoints(int totalCustomerRewardPoints) {
+		public void setTotalCustomerRewardPoints(float  totalCustomerRewardPoints) {
 			this.totalCustomerRewardPoints = totalCustomerRewardPoints;
 		}
 	public String getCustomerName() {

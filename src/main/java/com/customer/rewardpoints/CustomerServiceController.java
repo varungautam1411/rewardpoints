@@ -3,6 +3,8 @@ package com.customer.rewardpoints;
 
 
 import com.customer.rewardpoints.entity.CustomerTransactions;
+import com.customer.rewardpoints.exception.NoTransactionMadeException;
+import com.customer.rewardpoints.exception.RewardsExceptions;
 import com.customer.rewardpoints.service.CustomerRewardsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,9 +28,6 @@ import java.util.List;
 
 public class CustomerServiceController {
 
-
-	
-	
 	@Autowired
 	CustomerDataRepository customerDataRepository;
 	@Autowired
@@ -37,24 +36,17 @@ public class CustomerServiceController {
 	@GetMapping(value = "/{customerID}")
 	public ResponseEntity<CustomerRewards>  getCustomerRewardsById(@PathVariable int customerID)
 	{
-		// Here we need to write all of our business logic
-
-
-		CustomerData customerData = customerDataRepository.findByCustomerId(customerID);
-
-        if(customerData == null)
-        {
-        	throw new RuntimeException("Invalid / Missing customer Id ");
-        }
-
-		List<CustomerTransactions> list = customerTransactionsRepository.findAllByCustomerId(customerID);
-
-
-		CustomerRewards customerRewards = new CustomerRewards();
-		CustomerRewardsServiceImpl customerRewardsService = new CustomerRewardsServiceImpl();
-		customerRewards = customerRewardsService.prepareRewardsList(list);
-		customerRewards.setCustomerName(customerData.getCustomerName());
-        return new ResponseEntity<>(customerRewards,HttpStatus.OK);
+	CustomerData customerData = customerDataRepository.findByCustomerId(customerID);
+	if(customerData == null)
+	{
+		throw new NoTransactionMadeException();
+	}
+	List<CustomerTransactions> list = customerTransactionsRepository.findAllByCustomerId(customerID);
+	CustomerRewards customerRewards;
+	CustomerRewardsServiceImpl customerRewardsService = new CustomerRewardsServiceImpl();
+	customerRewards = customerRewardsService.prepareRewardsList(list);
+	customerRewards.setCustomerName(customerData.getCustomerName());
+	return new ResponseEntity<>(customerRewards,HttpStatus.OK);
 	}
 }
 
