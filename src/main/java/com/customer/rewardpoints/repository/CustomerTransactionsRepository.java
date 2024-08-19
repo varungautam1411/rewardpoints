@@ -8,10 +8,11 @@ import org.springframework.stereotype.Repository;
 import com.customer.rewardpoints.entity.CustomerTransactions;
 
 import jakarta.transaction.Transactional;
-@Repository
-@Transactional
-public interface CustomerTransactionsRepository extends CrudRepository<CustomerTransactions,Long> {
-	public List<CustomerTransactions> findAllByCustomerId(int customerId);
 
-   
+@Repository
+
+public interface CustomerTransactionsRepository extends CrudRepository<CustomerTransactions, Long> {
+    public List<CustomerTransactions> findAllByCustomerId(int customerId);
+
+
 }

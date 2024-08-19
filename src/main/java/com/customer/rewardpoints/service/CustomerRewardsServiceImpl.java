@@ -9,69 +9,77 @@ import java.util.List;
 import com.customer.rewardpoints.RewardpointsApplication;
 import com.customer.rewardpoints.exception.MonthOlderThanThreeException;
 import com.customer.rewardpoints.exception.NotCurrentYearException;
+import com.customer.rewardpoints.exception.RecentTransactionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.Date;
+
 import com.customer.rewardpoints.entity.CustomerTransactions;
 import com.customer.rewardpoints.model.CustomerRewards;
 import com.customer.rewardpoints.repository.CustomerTransactionsRepository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Service
-public class CustomerRewardsServiceImpl   {
-	private static final Logger logger = LoggerFactory.getLogger(CustomerRewardsServiceImpl.class);
+public class CustomerRewardsServiceImpl {
+    private static final Logger logger = LoggerFactory.getLogger(CustomerRewardsServiceImpl.class);
 
-	@Autowired
-	CustomerTransactionsRepository customerTransactionsRepository;
-	public CustomerRewards prepareRewardsList(List<CustomerTransactions> list) {
-		logger.info("Inside CustomerRewardsServiceImpl prepareRewardsList");
-		List<CustomerTransactions> totalTransactions = list;
-		CustomerRewards customerRewards = new CustomerRewards();
-		customerRewards.setCustomerId(totalTransactions.get(0).getCustomerId());
-		for(CustomerTransactions customerTransactions : list){
-			Date dateTemp = customerTransactions.getTransDate();
-            int yearOfPurchase =dateTemp.getYear()+1900;
-			int month = dateTemp.getMonth()+1;
-			GregorianCalendar date = new GregorianCalendar();
-			int currentMonth = date.get(Calendar.MONTH)+1;
-			int currentYear = date.get(Calendar.YEAR);
-			logger.info("The current year is "+currentYear+" and the purchase year is "+ yearOfPurchase);
-			logger.info("The current month is "+currentMonth+" and the purchase month is "+ month);
-			if(currentYear != yearOfPurchase){
-				throw new NotCurrentYearException();
-			}
-			logger.info("Amount spent is "+ customerTransactions.getAmount());
-			float rewards = calculateReward(customerTransactions.getAmount());
-			if(currentMonth - month == 1){
-				customerRewards.setLastMonthCustomerRewardPoints(customerRewards.getLastMonthCustomerRewardPoints()+rewards);
-				customerRewards.setTotalCustomerRewardPoints(customerRewards.getTotalCustomerRewardPoints()+rewards);
-			}else if(currentMonth - month == 2){
-				customerRewards.setSecondLastMothCustomerRewardPoints(customerRewards.getSecondLastMothCustomerRewardPoints()+rewards);
-				customerRewards.setTotalCustomerRewardPoints(customerRewards.getTotalCustomerRewardPoints()+rewards);
-			}else if(currentMonth - month == 3){
-				customerRewards.setThirdLastMothCustomerRewardPoints(customerRewards.getThirdLastMothCustomerRewardPoints()+rewards);
-				customerRewards.setTotalCustomerRewardPoints(customerRewards.getTotalCustomerRewardPoints()+rewards);
-			}else{
-				throw new MonthOlderThanThreeException();
-			}
-		}
-		return customerRewards;
-	}
-	public float calculateReward(float amount){
+    @Autowired
+    CustomerTransactionsRepository customerTransactionsRepository;
+	@Transactional
+    public CustomerRewards prepareRewardsList(List<CustomerTransactions> list) {
+        logger.info("Inside CustomerRewardsServiceImpl prepareRewardsList");
+        List<CustomerTransactions> totalTransactions = list;
+        CustomerRewards customerRewards = new CustomerRewards();
+        customerRewards.setCustomerId(totalTransactions.get(0).getCustomerId());
+        for (CustomerTransactions customerTransactions : list) {
+            Date dateTemp = customerTransactions.getTransDate();
+            int yearOfPurchase = dateTemp.getYear() + 1900;
+            int month = dateTemp.getMonth() + 1;
+            GregorianCalendar date = new GregorianCalendar();
+            int currentMonth = date.get(Calendar.MONTH) + 1;
+            int currentYear = date.get(Calendar.YEAR);
+            logger.info("The current year is " + currentYear + " and the purchase year is " + yearOfPurchase);
+            logger.info("The current month is " + currentMonth + " and the purchase month is " + month);
+            if (currentYear != yearOfPurchase) {
+                throw new NotCurrentYearException();
+            }
+            logger.info("Amount spent is " + customerTransactions.getAmount());
+            float rewards = calculateReward(customerTransactions.getAmount());
+            if (currentMonth - month == 1) {
+                customerRewards.setLastMonthCustomerRewardPoints(customerRewards.getLastMonthCustomerRewardPoints() + rewards);
+                customerRewards.setTotalCustomerRewardPoints(customerRewards.getTotalCustomerRewardPoints() + rewards);
+            } else if (currentMonth - month == 2) {
+                customerRewards.setSecondLastMothCustomerRewardPoints(customerRewards.getSecondLastMothCustomerRewardPoints() + rewards);
+                customerRewards.setTotalCustomerRewardPoints(customerRewards.getTotalCustomerRewardPoints() + rewards);
+            } else if (currentMonth - month == 3) {
+                customerRewards.setThirdLastMothCustomerRewardPoints(customerRewards.getThirdLastMothCustomerRewardPoints() + rewards);
+                customerRewards.setTotalCustomerRewardPoints(customerRewards.getTotalCustomerRewardPoints() + rewards);
+            } else if (currentMonth - month < 1) {
+                throw new RecentTransactionException();
+            } else {
+                throw new MonthOlderThanThreeException();
+            }
+        }
+        return customerRewards;
+    }
 
-		if(amount <=50){
-			return 0;
-		}
-		float rewards =0;
+    public float calculateReward(float amount) {
 
-			if(amount > 100){
-				rewards+=2*(amount-100) + 50;
-			}else if(amount < 100 ){
-				rewards+=amount-50;
-			}
+        if (amount <= 50) {
+            return 0;
+        }
+        float rewards = 0;
 
-			return rewards;
-	}
+        if (amount > 100) {
+            rewards += 2 * (amount - 100) + 50;
+        } else if (amount < 100) {
+            rewards += amount - 50;
+        }
+
+        return rewards;
+    }
 }

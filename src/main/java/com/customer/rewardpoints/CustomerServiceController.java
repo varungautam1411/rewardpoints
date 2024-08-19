@@ -1,7 +1,6 @@
 package com.customer.rewardpoints;
 
 
-
 import com.customer.rewardpoints.entity.CustomerTransactions;
 import com.customer.rewardpoints.exception.NoTransactionMadeException;
 import com.customer.rewardpoints.exception.RewardsExceptions;
@@ -24,30 +23,28 @@ import java.util.List;
 
 @RestController
 @RequestMapping(
-		"/customerRewards")
+        "/customerRewards")
 
 public class CustomerServiceController {
 
-	@Autowired
-	CustomerDataRepository customerDataRepository;
-	@Autowired
-	CustomerTransactionsRepository customerTransactionsRepository;
-	
-	@GetMapping(value = "/{customerID}")
-	public ResponseEntity<CustomerRewards>  getCustomerRewardsById(@PathVariable int customerID)
-	{
-	CustomerData customerData = customerDataRepository.findByCustomerId(customerID);
-	if(customerData == null)
-	{
-		throw new NoTransactionMadeException();
-	}
-	List<CustomerTransactions> list = customerTransactionsRepository.findAllByCustomerId(customerID);
-	CustomerRewards customerRewards;
-	CustomerRewardsServiceImpl customerRewardsService = new CustomerRewardsServiceImpl();
-	customerRewards = customerRewardsService.prepareRewardsList(list);
-	customerRewards.setCustomerName(customerData.getCustomerName());
-	return new ResponseEntity<>(customerRewards,HttpStatus.OK);
-	}
+    @Autowired
+    CustomerDataRepository customerDataRepository;
+    @Autowired
+    CustomerTransactionsRepository customerTransactionsRepository;
+
+    @GetMapping(value = "/{customerID}")
+    public ResponseEntity<CustomerRewards> getCustomerRewardsById(@PathVariable int customerID) {
+        CustomerData customerData = customerDataRepository.findByCustomerId(customerID);
+        if (customerData == null) {
+            throw new NoTransactionMadeException();
+        }
+        List<CustomerTransactions> list = customerTransactionsRepository.findAllByCustomerId(customerID);
+        CustomerRewards customerRewards;
+        CustomerRewardsServiceImpl customerRewardsService = new CustomerRewardsServiceImpl();
+        customerRewards = customerRewardsService.prepareRewardsList(list);
+        customerRewards.setCustomerName(customerData.getCustomerName());
+        return new ResponseEntity<>(customerRewards, HttpStatus.OK);
+    }
 }
 
 

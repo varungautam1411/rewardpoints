@@ -2,9 +2,11 @@ package com.customer.rewardpoints.service;
 
 import com.customer.rewardpoints.entity.CustomerTransactions;
 import com.customer.rewardpoints.model.CustomerRewards;
-import org.springframework.context.annotation.Bean;
+
+
+import java.util.List;
 
 
 public interface CustomerRewardsService {
-    public CustomerRewards prepareRewardsList(CustomerRewards customerRewards) ;
+    public CustomerRewards prepareRewardsList(List<CustomerTransactions> list);
 }

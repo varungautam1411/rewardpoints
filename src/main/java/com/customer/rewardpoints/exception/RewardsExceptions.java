@@ -21,5 +21,10 @@ public class RewardsExceptions {
         return new ResponseEntity<>("No transaction made by this customer", HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(value = RecentTransactionException.class)
+    public ResponseEntity<Object> exception(RecentTransactionException exception) {
+        return new ResponseEntity<>("Transaction date is less than a month old", HttpStatus.NOT_FOUND);
+    }
+
 
 }

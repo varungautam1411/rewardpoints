@@ -8,11 +8,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class RewardpointsApplication {
-	private static final Logger logger = LoggerFactory.getLogger(RewardpointsApplication.class);
-	public static void main(String[] args) {
-		logger.info("Starting the application");
-		SpringApplication.run(RewardpointsApplication.class, args);
-	}
+    private static final Logger logger = LoggerFactory.getLogger(RewardpointsApplication.class);
+
+    public static void main(String[] args) {
+        logger.info("Starting the application");
+        SpringApplication.run(RewardpointsApplication.class, args);
+    }
 
 
 }

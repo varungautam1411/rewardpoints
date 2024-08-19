@@ -1,7 +1,6 @@
 package com.customer.rewardpoints.entity;
 
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -16,28 +15,27 @@ import jakarta.persistence.Table;
 public class CustomerData {
 
 
+    @Id
+    @Column(name = "CUSTOMER_ID")
+    private int customerId;
+    @Column(name = "CUSTOMER_NAME")
+    private String customerName;
 
-	@Id
-	@Column(name = "CUSTOMER_ID")
-	private int customerId;
-	@Column(name = "CUSTOMER_NAME")
-	private String customerName;
-	
-	public int getCustomerId() {
-		return customerId;
-	}
+    public int getCustomerId() {
+        return customerId;
+    }
 
-	public String getCustomerName() {
-		return customerName;
-	}
+    public String getCustomerName() {
+        return customerName;
+    }
 
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
-	}
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
 
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
-	}
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
 
 }
 
