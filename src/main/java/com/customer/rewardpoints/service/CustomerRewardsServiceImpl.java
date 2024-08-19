@@ -23,6 +23,8 @@ import com.customer.rewardpoints.repository.CustomerTransactionsRepository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import static java.lang.Math.floor;
+
 @Service
 public class CustomerRewardsServiceImpl {
     private static final Logger logger = LoggerFactory.getLogger(CustomerRewardsServiceImpl.class);
@@ -48,7 +50,7 @@ public class CustomerRewardsServiceImpl {
                 throw new NotCurrentYearException();
             }
             logger.info("Amount spent is " + customerTransactions.getAmount());
-            float rewards = calculateReward(customerTransactions.getAmount());
+            int rewards = calculateReward(customerTransactions.getAmount());
             if (currentMonth - month == 1) {
                 customerRewards.setLastMonthCustomerRewardPoints(customerRewards.getLastMonthCustomerRewardPoints() + rewards);
                 customerRewards.setTotalCustomerRewardPoints(customerRewards.getTotalCustomerRewardPoints() + rewards);
@@ -67,17 +69,17 @@ public class CustomerRewardsServiceImpl {
         return customerRewards;
     }
 
-    public float calculateReward(float amount) {
+    public int calculateReward(float amount) {
 
         if (amount <= 50) {
             return 0;
         }
-        float rewards = 0;
+        int rewards = 0;
 
         if (amount > 100) {
-            rewards += 2 * (amount - 100) + 50;
+            rewards += Math.floor(2 * (amount - 100) + 50);
         } else if (amount < 100) {
-            rewards += amount - 50;
+            rewards += Math.floor(amount - 50);
         }
 
         return rewards;
