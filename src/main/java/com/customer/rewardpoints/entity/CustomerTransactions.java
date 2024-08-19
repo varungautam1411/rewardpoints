@@ -32,10 +32,10 @@ public class CustomerTransactions {
     @Getter
     @Setter
     private Date transDate;
+    @Column(name = "AMOUNT")
     @Getter
     @Setter
-    @Column(name = "AMOUNT")
-    private float amount;
+    private double amount;
 }
 
 	

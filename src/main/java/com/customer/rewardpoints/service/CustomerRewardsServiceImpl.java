@@ -69,8 +69,8 @@ public class CustomerRewardsServiceImpl {
         return customerRewards;
     }
 
-    public int calculateReward(float amount) {
-
+    public int calculateReward(double amount) {
+System.out.println("The amount is " + amount);
         if (amount <= 50) {
             return 0;
         }
