@@ -1,7 +1,6 @@
 package com.customer.rewardpoints;
 
 
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,12 +47,13 @@ public class TestApplication extends RewardsPointsApplicationTest {
     @Test
     public void purchaseOlderThanThreeMonths() throws Exception {
 
-     MvcResult result = mockMvc.perform(get("/customerRewards/106").header("MockHttpServletResponse", 64).contentType(MediaType.APPLICATION_JSON)
+        MvcResult result = mockMvc.perform(get("/customerRewards/106").header("MockHttpServletResponse", 64).contentType(MediaType.APPLICATION_JSON)
                         .content("{\"Body\":\"testUserDetails\"}"))
                 .andDo(MockMvcResultHandlers.print()).andReturn();
         String content = result.getResponse().getContentAsString();
-           Assert.assertTrue(content.equalsIgnoreCase("Month of purchase Older than three"));
+        Assert.assertTrue(content.equalsIgnoreCase("Month of purchase Older than three"));
     }
+
     @Test
     public void notCurrentYear() throws Exception {
 
@@ -73,6 +73,7 @@ public class TestApplication extends RewardsPointsApplicationTest {
         String content = result.getResponse().getContentAsString();
         Assert.assertTrue(content.equalsIgnoreCase("Transaction date is less than a month old"));
     }
+
     @Test
     public void noTransactionMade() throws Exception {
 
