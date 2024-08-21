@@ -1,16 +1,17 @@
 package com.customer.rewardpoints;
 
 
-import com.customer.rewardpoints.entity.CustomerData;
-import com.customer.rewardpoints.entity.CustomerTransactions;
-import com.customer.rewardpoints.model.CustomerRewards;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -45,12 +46,40 @@ public class TestApplication extends RewardsPointsApplicationTest {
     }
 
     @Test
-    public void shouldGetValidResult() throws Exception {
+    public void purchaseOlderThanThreeMonths() throws Exception {
 
-        ResultActions response = this.mockMvc.perform(get("/customerRewards/105"));
+     MvcResult result = mockMvc.perform(get("/customerRewards/106").header("MockHttpServletResponse", 64).contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"Body\":\"testUserDetails\"}"))
+                .andDo(MockMvcResultHandlers.print()).andReturn();
+        String content = result.getResponse().getContentAsString();
+           Assert.assertTrue(content.equalsIgnoreCase("Month of purchase Older than three"));
+    }
+    @Test
+    public void notCurrentYear() throws Exception {
 
-        response.andDo(print()).andExpect(result -> System.out.println(result.getResponse().getContentAsString().contains("totalCustomerRewardPoints")));
+        MvcResult result = mockMvc.perform(get("/customerRewards/108").header("MockHttpServletResponse", 64).contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"Body\":\"testUserDetails\"}"))
+                .andDo(MockMvcResultHandlers.print()).andReturn();
+        String content = result.getResponse().getContentAsString();
+        Assert.assertTrue(content.equalsIgnoreCase("This purchase is not of this year"));
+    }
 
+    @Test
+    public void transactionNotOldEnough() throws Exception {
 
+        MvcResult result = mockMvc.perform(get("/customerRewards/107").header("MockHttpServletResponse", 64).contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"Body\":\"testUserDetails\"}"))
+                .andDo(MockMvcResultHandlers.print()).andReturn();
+        String content = result.getResponse().getContentAsString();
+        Assert.assertTrue(content.equalsIgnoreCase("Transaction date is less than a month old"));
+    }
+    @Test
+    public void noTransactionMade() throws Exception {
+
+        MvcResult result = mockMvc.perform(get("/customerRewards/109").header("MockHttpServletResponse", 64).contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"Body\":\"testUserDetails\"}"))
+                .andDo(MockMvcResultHandlers.print()).andReturn();
+        String content = result.getResponse().getContentAsString();
+        Assert.assertTrue(content.equalsIgnoreCase("No transaction made by this customer"));
     }
 }
