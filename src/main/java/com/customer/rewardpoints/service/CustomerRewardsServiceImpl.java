@@ -26,17 +26,20 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import static java.lang.Math.floor;
 
 @Service
-public class CustomerRewardsServiceImpl {
+public class CustomerRewardsServiceImpl implements CustomerRewardsService {
     private static final Logger logger = LoggerFactory.getLogger(CustomerRewardsServiceImpl.class);
 
     @Autowired
     CustomerTransactionsRepository customerTransactionsRepository;
-	@Transactional
-    public CustomerRewards prepareRewardsList(List<CustomerTransactions> list) {
+   
+
+
+    public  CustomerRewards prepareRewardsList(int customerID) {
         logger.info("Inside CustomerRewardsServiceImpl prepareRewardsList");
-        List<CustomerTransactions> totalTransactions = list;
+        List<CustomerTransactions> list = customerTransactionsRepository.findAllByCustomerId(customerID);
         CustomerRewards customerRewards = new CustomerRewards();
-        customerRewards.setCustomerId(totalTransactions.get(0).getCustomerId());
+
+        customerRewards.setCustomerId(list.get(0).getCustomerId());
         for (CustomerTransactions customerTransactions : list) {
             Date dateTemp = customerTransactions.getTransDate();
             int yearOfPurchase = dateTemp.getYear() + 1900;

@@ -4,6 +4,7 @@ package com.customer.rewardpoints;
 import com.customer.rewardpoints.entity.CustomerTransactions;
 import com.customer.rewardpoints.exception.NoTransactionMadeException;
 import com.customer.rewardpoints.exception.RewardsExceptions;
+import com.customer.rewardpoints.service.CustomerRewardsService;
 import com.customer.rewardpoints.service.CustomerRewardsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,8 @@ public class CustomerServiceController {
     @Autowired
     CustomerDataRepository customerDataRepository;
     @Autowired
-    CustomerTransactionsRepository customerTransactionsRepository;
+    CustomerRewardsService customerRewardsService;
+   
 
     @GetMapping(value = "/{customerID}")
     public ResponseEntity<CustomerRewards> getCustomerRewardsById(@PathVariable int customerID) {
@@ -38,10 +40,8 @@ public class CustomerServiceController {
         if (customerData == null) {
             throw new NoTransactionMadeException();
         }
-        List<CustomerTransactions> list = customerTransactionsRepository.findAllByCustomerId(customerID);
-        CustomerRewards customerRewards;
-        CustomerRewardsServiceImpl customerRewardsService = new CustomerRewardsServiceImpl();
-        customerRewards = customerRewardsService.prepareRewardsList(list);
+
+        CustomerRewards customerRewards = customerRewardsService.prepareRewardsList(customerID);
         customerRewards.setCustomerName(customerData.getCustomerName());
         return new ResponseEntity<>(customerRewards, HttpStatus.OK);
     }

@@ -13,6 +13,8 @@ import lombok.Setter;
 
 // @Entity annotation defines that a class can be mapped to
 // a table
+@Setter
+@Getter
 @Entity
 
 // Representation of the table name
@@ -21,20 +23,12 @@ public class CustomerTransactions {
 
     @Id
     @Column(name = "TRANSACTION_ID")
-    @Getter
-    @Setter
     private int transactionId;
     @Column(name = "CUSTOMER_ID")
-    @Getter
-    @Setter
     private int customerId;
     @Column(name = "TRANSACTION_DATE")
-    @Getter
-    @Setter
     private Date transDate;
     @Column(name = "AMOUNT")
-    @Getter
-    @Setter
     private double amount;
 }
 
