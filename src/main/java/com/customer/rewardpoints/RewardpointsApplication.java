@@ -14,6 +14,4 @@ public class RewardpointsApplication {
         logger.info("Starting the application");
         SpringApplication.run(RewardpointsApplication.class, args);
     }
-
-
 }

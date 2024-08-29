@@ -11,6 +11,7 @@ public class RewardsExceptions {
     public ResponseEntity<Object> exception(MonthOlderThanThreeException exception) {
         return new ResponseEntity<>("Month of purchase Older than three", HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(value = NotCurrentYearException.class)
     public ResponseEntity<Object> exception(NotCurrentYearException exception) {
         return new ResponseEntity<>("This purchase is not of this year", HttpStatus.NOT_FOUND);

@@ -31,10 +31,9 @@ public class CustomerRewardsServiceImpl implements CustomerRewardsService {
 
     @Autowired
     CustomerTransactionsRepository customerTransactionsRepository;
-   
 
 
-    public  CustomerRewards prepareRewardsList(int customerID) {
+    public CustomerRewards prepareRewardsList(int customerID) {
         logger.info("Inside CustomerRewardsServiceImpl prepareRewardsList");
         List<CustomerTransactions> list = customerTransactionsRepository.findAllByCustomerId(customerID);
         CustomerRewards customerRewards = new CustomerRewards();
@@ -73,7 +72,7 @@ public class CustomerRewardsServiceImpl implements CustomerRewardsService {
     }
 
     public int calculateReward(double amount) {
-System.out.println("The amount is " + amount);
+        System.out.println("The amount is " + amount);
         if (amount <= 50) {
             return 0;
         }
